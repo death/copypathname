@@ -1,0 +1,24 @@
+HKCR
+{
+	NoRemove *
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove CopyPathnameExt = s '{2EECB91C-3E6A-4D08-BDCA-05FB48CCE9F3}'
+			}
+		}
+	}
+	
+	NoRemove Directory
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove CopyPathnameExt = s '{2EECB91C-3E6A-4D08-BDCA-05FB48CCE9F3}'
+			}
+		}
+	}
+}
