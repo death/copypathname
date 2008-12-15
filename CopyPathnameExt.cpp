@@ -19,7 +19,7 @@ STDMETHODIMP CCopyPathnameExt::Initialize(LPCITEMIDLIST folder, LPDATAOBJECT dat
     HRESULT hr = S_OK;
     UINT nfiles = DragQueryFile(drop, 0xFFFFFFFF, 0, 0);
     if (nfiles == 1) {
-        if (DragQueryFile(drop, 0, m_pathname, MAX_PATH)) {
+        if (DragQueryFileA(drop, 0, m_pathname, MAX_PATH)) {
             // We return S_OK, so Explorer will call QueryInterface again
             // and get a pointer to the IContextMenu interface.
         } else {
@@ -61,18 +61,18 @@ STDMETHODIMP CCopyPathnameExt::GetCommandString(UINT command,
 
 namespace
 {
-    bool CopyTextToClipboard(HWND hwnd, LPCTSTR text)
+    bool CopyTextToClipboard(HWND hwnd, LPCSTR text)
     {
         bool copied = false;
         
         if (OpenClipboard(hwnd)) {
             if (EmptyClipboard()) {
                 if (text[0]) {
-                    HGLOBAL hBuf = GlobalAlloc(GHND, lstrlen(text) + 1);
+                    HGLOBAL hBuf = GlobalAlloc(GHND, lstrlenA(text) + 1);
                     if (hBuf) {
                         char *buf = static_cast<char *>(GlobalLock(hBuf));
                         if (buf) {
-                            lstrcpy(buf, text);
+                            lstrcpyA(buf, text);
                             if (GlobalUnlock(hBuf) == 0 && GetLastError() == NO_ERROR) {
                                 if (SetClipboardData(CF_TEXT, hBuf))
                                     copied = true;

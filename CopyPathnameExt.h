@@ -48,6 +48,6 @@ public:
 
 
 private:
-    TCHAR m_pathname[MAX_PATH];
+    char m_pathname[MAX_PATH];
 };
 
