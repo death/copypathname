@@ -5,6 +5,8 @@
 
 #include <shlobj.h>
 #include <comdef.h>
+#include <string>
+#include <vector>
 
 // CCopyPathnameExt
 
@@ -48,6 +50,6 @@ public:
 
 
 private:
-    char m_pathname[MAX_PATH];
+    std::vector<std::string> m_pathnames;
 };
 

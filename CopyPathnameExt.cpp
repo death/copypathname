@@ -18,15 +18,17 @@ STDMETHODIMP CCopyPathnameExt::Initialize(LPCITEMIDLIST folder, LPDATAOBJECT dat
 
     HRESULT hr = S_OK;
     UINT nfiles = DragQueryFile(drop, 0xFFFFFFFF, 0, 0);
-    if (nfiles == 1) {
-        if (DragQueryFileA(drop, 0, m_pathname, MAX_PATH)) {
-            // We return S_OK, so Explorer will call QueryInterface again
-            // and get a pointer to the IContextMenu interface.
-        } else {
-            hr = E_INVALIDARG;
-        }
-    } else {
+    if (nfiles == 0) {
         hr = E_INVALIDARG;
+    } else {
+        for (UINT i = 0; i < nfiles; i++) {
+            char pathname[MAX_PATH];
+            if (!DragQueryFileA(drop, i, pathname, MAX_PATH)) {
+                hr = E_INVALIDARG;
+                break;
+            }
+            m_pathnames.push_back(pathname);
+        }
     }
 
     GlobalUnlock(stg.hGlobal);
@@ -100,7 +102,14 @@ STDMETHODIMP CCopyPathnameExt::InvokeCommand(LPCMINVOKECOMMANDINFO cmdInfo)
     switch (LOWORD(cmdInfo->lpVerb)) {
         case 0:
             {
-                CopyTextToClipboard(cmdInfo->hwnd, m_pathname);
+                if (!m_pathnames.empty()) {
+                    std::string pathnames = m_pathnames[0];
+                    for (size_t i = 1; i < m_pathnames.size(); i++) {
+                        pathnames += "\r\n";
+                        pathnames += m_pathnames[i];
+                    }
+                    CopyTextToClipboard(cmdInfo->hwnd, pathnames.c_str());
+                }
             }
             return S_OK;
         default:

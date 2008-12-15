@@ -41,5 +41,7 @@
 #include <atlctl.h>
 #include <atlhost.h>
 
+#include <string>
+#include <vector>
 
 using namespace ATL;
