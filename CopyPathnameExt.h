@@ -10,8 +10,8 @@
 
 [
 	coclass,
-	threading("apartment"),
-	aggregatable("never"),
+	threading(apartment),
+	aggregatable(never),
 	vi_progid("CopyPathname.CopyPathnameExt"),
 	progid("CopyPathname.CopyPathnameExt.1"),
 	version(1.0),

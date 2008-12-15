@@ -5,4 +5,5 @@ Release
 *.ncb
 *.suo
 *.vspscc
+*.user
 _*
